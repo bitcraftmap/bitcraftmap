@@ -43,6 +43,8 @@
 
 			const supabaseUrl = 'https://zoeqtximnanspdpyssws.supabase.co';
 			const supabaseKey = 'yeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvZXF0eGltbmFuc3BkcHlzc3dzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjA0MjEsImV4cCI6MjA2ODIzNjQyMX0.0UyPCi5otQYJuzy61LJUsYlPBRaSK6d5Sq8DXpyJsF4';
+			const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+			
 			async function loadWaypoints() {
 				const { data, error } = await supabase.from('public_claims').select('*');
 
