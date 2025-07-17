@@ -1,6 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <body>
-    <h1>Hello world! test</h1>
-    </body>
-</html> 
+	<head>
+		<title>Bitcraft Game Map</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+			integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+			crossorigin=""/>
+			 
+
+		<style>
+			#map {
+				height: 100vh;
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="map"></div>
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+			integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+			crossorigin="">
+		</script>
+		
+		<script>
+			const imageWidth = 7676;
+			const imageHeight = 7676;
+			const imageBounds = [[0, 0], [imageHeight, imageWidth]];
+			
+			const map = L.map('map', {
+				crs: L.CRS.Simple,
+				minZoom: -10,
+				maxZoom: 2,
+				zoomSnap: 0.1,
+			});
+			
+			map.fitBounds(imageBounds);
+			L.imageOverlay('map.png', imageBounds).addTo(map);
+			
+			
+			const marker = L.marker([750, 1000]).addTo(map);
+			marker.bindPopup("Center of the Map");
+		</script>
+		
+	</body>
+</html>
