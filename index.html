@@ -61,41 +61,43 @@
 			const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvZXF0eGltbmFuc3BkcHlzc3dzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjA0MjEsImV4cCI6MjA2ODIzNjQyMX0.0UyPCi5otQYJuzy61LJUsYlPBRaSK6d5Sq8DXpyJsF4';
 			const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-      const caveIcon = L.icon({
-        iconUrl: 'assets/t1_small.png', // relative or absolute path
-        iconSize: [32, 32],               // [width, height] in pixels
-        iconAnchor: [16, 16],             // point of the icon which will correspond to marker's location
-        popupAnchor: [0, -16]             // point from which the popup should open relative to the iconAnchor
-      });
+      function createMapIcon(iconUrl) {
+        return L.icon({
+          iconUrl: iconUrl,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+          popupAnchor: [0, -16],
+          shadowUrl: null,
+          shadowSize: null,
+          shadowAnchor: null
+        });
+      }
+ 
 
-
-			async function loadWaypoints() {
-				const { data, error } = await supabaseClient.from('public_claims').select('*');
-
-				if (error) {
-					console.error('Error fetching waypoints:', error);
-					return;
-				}
-
-				data.forEach(point => {
-					const marker = L.marker([point.pos_y/1.1547005, point.pos_x]).addTo(map);
-					const popupContent = `<strong>${point.name}</strong>`;
-					marker.bindPopup(popupContent);
-				});
-			}
+      const caveIcons = 
+      [
+        createMapIcon('assets/icons/FerralithOreChunk.webp'),
+        createMapIcon('assets/icons/PyreliteOreChunk.webp'),
+        createMapIcon('assets/icons/EmariumOreChunk.webp'),
+        createMapIcon('assets/icons/ElenvarOreChunk.webp'),
+        createMapIcon('assets/icons/LuminiteOreChunk.webp'),
+        createMapIcon('assets/icons/RathiumOreChunk.webp'),
+        createMapIcon('assets/icons/AurumiteOreChunk.webp'),
+        createMapIcon('assets/icons/CelestiumOreChunk.webp'),
+        createMapIcon('assets/icons/UmbraciteOreChunk.webp'),
+        createMapIcon('assets/icons/AstraliteOreChunk.webp')
+      ]
 
 			async function loadCaves() {
 				const { data, error } = await supabaseClient.from('caves').select('*');
 				if (error) { console.error('Error fetching caves:', error); return; }
 
 				data.forEach(cave => {
-					const marker = L.marker([cave.pos_n/1.1547005, cave.pos_e], { icon: caveIcon }).addTo(map);
-					const popupContent = `<strong>${cave.name}</strong>`;
-					marker.bindPopup(popupContent);
+					const marker = L.marker([cave.pos_n/1.1547005, cave.pos_e], { icon: caveIcons[cave.tier-1] }).addTo(map);
+					marker.bindPopup(cave.size + ' ' + cave.name);
 				});
 			}
 
-			//adWaypoints();
 			loadCaves();
 		</script>
 
