@@ -1,70 +1,37 @@
-Filters to be implemented :
 
-All :
+Global filter :
 
 - Filter by region
 - Filter by biome
-- 
+
 
 Claims :
 
-- Filter by tier
-
-
-
-
+    - Filter by tier
+    - Filter by name ?
 
 Filter per profession :
-
-- Foraging
-- Hunting
-- Mining
-- Forestry
-- Fishing
-
-
-
-
-
-
-
-
-Resources :
-Note : One tier of one resource can have many node types
-
-- Animals
-- Monsters
-- Berry
-- Clay
-- Fiber
-- Fish Bait
-- Fisk Lake
-- Fist Ocean
-- Flowers
-- Hieroglyphs
-- Mushroom
-- Ore
-- Sand
-- Stone
-- Tree
-- Wild food
-
-Toggles :
-
+    - Foraging
+    - Hunting
+    - Mining
+    - Forestry
+    - Fishing
+- Resources
+    - Filter by tier
 - Caves
     - Filter by tier
-Temples
-Wonders
-Jakyls Dens
+    - Filter by size
 
 
+Menu :
 
+- Colapse
+- Move around
+- Pin to current position
 
+- Load Settings
+- Save Settings
 
+For later :
 
-Allow to move the menu or colapse it and freeze it in place
-"Save this settings" button saving presets locally
-
-Idea :
-
-Resource finder in range, with a circle or another shape : find all resources in that area
+- Resource Finder in range [circle or draw a shape]

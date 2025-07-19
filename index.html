@@ -55,7 +55,7 @@
 			});
 			
 			map.fitBounds(imageBounds);
-			L.imageOverlay('map.png', imageBounds).addTo(map);
+			L.imageOverlay('assets/maps/map.png', imageBounds).addTo(map);
 
 			const supabaseUrl = 'https://zoeqtximnanspdpyssws.supabase.co';
 			const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvZXF0eGltbmFuc3BkcHlzc3dzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjA0MjEsImV4cCI6MjA2ODIzNjQyMX0.0UyPCi5otQYJuzy61LJUsYlPBRaSK6d5Sq8DXpyJsF4';
@@ -74,8 +74,7 @@
       }
  
 
-      const caveIcons = 
-      [
+      const caveIcons = [
         createMapIcon('assets/icons/FerralithOreChunk.webp'),
         createMapIcon('assets/icons/PyreliteOreChunk.webp'),
         createMapIcon('assets/icons/EmariumOreChunk.webp'),
@@ -86,15 +85,19 @@
         createMapIcon('assets/icons/CelestiumOreChunk.webp'),
         createMapIcon('assets/icons/UmbraciteOreChunk.webp'),
         createMapIcon('assets/icons/AstraliteOreChunk.webp')
-      ]
+      ];
 
 			async function loadCaves() {
 				const { data, error } = await supabaseClient.from('caves').select('*');
 				if (error) { console.error('Error fetching caves:', error); return; }
 
+        let count = 0;
+        data.forEach(cave => {count++;});
+        console.log(count);
+
 				data.forEach(cave => {
 					const marker = L.marker([cave.pos_n/1.1547005, cave.pos_e], { icon: caveIcons[cave.tier-1] }).addTo(map);
-					marker.bindPopup(cave.size + ' ' + cave.name);
+					marker.bindPopup(cave.size + ' ' + cave.name + '(T' + cave.tier + ')');
 				});
 			}
 
