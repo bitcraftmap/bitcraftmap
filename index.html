@@ -61,6 +61,14 @@
 			const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvZXF0eGltbmFuc3BkcHlzc3dzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjA0MjEsImV4cCI6MjA2ODIzNjQyMX0.0UyPCi5otQYJuzy61LJUsYlPBRaSK6d5Sq8DXpyJsF4';
 			const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+      const caveIcon = L.icon({
+        iconUrl: 'assets/t1_small.png', // relative or absolute path
+        iconSize: [32, 32],               // [width, height] in pixels
+        iconAnchor: [16, 16],             // point of the icon which will correspond to marker's location
+        popupAnchor: [0, -16]             // point from which the popup should open relative to the iconAnchor
+      });
+
+
 			async function loadWaypoints() {
 				const { data, error } = await supabaseClient.from('public_claims').select('*');
 
@@ -70,13 +78,25 @@
 				}
 
 				data.forEach(point => {
-					const marker = L.marker([point.pos_y/1.1547, point.pos_x]).addTo(map);
+					const marker = L.marker([point.pos_y/1.1547005, point.pos_x]).addTo(map);
 					const popupContent = `<strong>${point.name}</strong>`;
 					marker.bindPopup(popupContent);
 				});
 			}
-			console.log('test');
-			loadWaypoints();
+
+			async function loadCaves() {
+				const { data, error } = await supabaseClient.from('caves').select('*');
+				if (error) { console.error('Error fetching caves:', error); return; }
+
+				data.forEach(cave => {
+					const marker = L.marker([cave.pos_n/1.1547005, cave.pos_e], { icon: caveIcon }).addTo(map);
+					const popupContent = `<strong>${cave.name}</strong>`;
+					marker.bindPopup(popupContent);
+				});
+			}
+
+			//adWaypoints();
+			loadCaves();
 		</script>
 
 
