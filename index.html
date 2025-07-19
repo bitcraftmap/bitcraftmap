@@ -13,6 +13,7 @@
 			#map {
 				height: 100vh;
 				width: 100%;
+        background-color: #222d44;
 			}
       .filter-btn {
         margin: 5px;
@@ -27,8 +28,7 @@
         color: #fff;
       }
       body {
-        background-color: #121212;
-        color: white;
+        background-color: #222d44;
       }
       input[type="search"] {
         background-color: #333;
@@ -90,10 +90,6 @@
 			async function loadCaves() {
 				const { data, error } = await supabaseClient.from('caves').select('*');
 				if (error) { console.error('Error fetching caves:', error); return; }
-
-        let count = 0;
-        data.forEach(cave => {count++;});
-        console.log(count);
 
 				data.forEach(cave => {
 					const marker = L.marker([cave.pos_n/1.1547005, cave.pos_e], { icon: caveIcons[cave.tier-1] }).addTo(map);
