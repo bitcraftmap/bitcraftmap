@@ -3,11 +3,12 @@
 	<head>
 		<title>Bitcraft Game Map</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="">
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin=""></script>
 		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-canvas-marker@0.2.0/dist/leaflet.canvas-markers.min.js" crossorigin=""></script>
+
 
 		<style>
 			#map {
@@ -15,26 +16,6 @@
 				width: 100%;
         background-color: #222d44;
 			}
-      .filter-btn {
-        margin: 5px;
-        width: 160px;
-      }
-      .filter-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-        background-color: #1e1e1e;
-        color: #fff;
-      }
-      body {
-        background-color: #222d44;
-      }
-      input[type="search"] {
-        background-color: #333;
-        color: white;
-        border: none;
-      }
     </style>
 	</head>
 
@@ -50,16 +31,14 @@
 			const map = L.map('map', {
 				crs: L.CRS.Simple,
 				minZoom: -10,
-				maxZoom: 2,
+				maxZoom: 10,
 				zoomSnap: 0.1,
 			});
 			
 			map.fitBounds(imageBounds);
 			L.imageOverlay('assets/maps/map.png', imageBounds).addTo(map);
 
-			const supabaseUrl = 'https://zoeqtximnanspdpyssws.supabase.co';
-			const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvZXF0eGltbmFuc3BkcHlzc3dzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjA0MjEsImV4cCI6MjA2ODIzNjQyMX0.0UyPCi5otQYJuzy61LJUsYlPBRaSK6d5Sq8DXpyJsF4';
-			const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
 
       function createMapIcon(iconUrl) {
         return L.icon({
@@ -73,7 +52,6 @@
         });
       }
  
-
       const caveIcons = [
         createMapIcon('assets/icons/FerralithOreChunk.webp'),
         createMapIcon('assets/icons/PyreliteOreChunk.webp'),
@@ -87,66 +65,49 @@
         createMapIcon('assets/icons/AstraliteOreChunk.webp')
       ];
 
-			async function loadCaves() {
-				const { data, error } = await supabaseClient.from('caves').select('*');
-				if (error) { console.error('Error fetching caves:', error); return; }
+      const oreTier = [
+        'Ferralith',
+        'Pyrelite',
+        'Emarium',
+        'Elenvar',
+        'Luminite',
+        'Rathium',
+        'Aurumite',
+        'Celestium',
+        'Umbracite',
+        'Astralite'
+      ]
 
-				data.forEach(cave => {
-					const marker = L.marker([cave.pos_n/1.1547005, cave.pos_e], { icon: caveIcons[cave.tier-1] }).addTo(map);
-					marker.bindPopup(cave.size + ' ' + cave.name + '(T' + cave.tier + ')');
-				});
-			}
+      const caveSize = [
+        'Small',
+        'Large'
+      ]
 
-			loadCaves();
+      // const ruinedCities = L.layerGroup();
+      // const playerClaims = L.layerGroup();
+      // const empireTowers = L.layerGroup();
+      // const temples = L.layerGroup();
+      // const wonders = L.layerGroup();
+
+      const caves = L.canvasIconLayer({}).addTo(map);
+
+      fetch('assets/markers/caves.msgpack')
+        .then(response => response.arrayBuffer())
+        .then(buffer => {
+          const data = msgpack.decode(new Uint8Array(buffer));
+
+          data.forEach(cave => {
+            L.marker(
+              [ cave.e * 7676 / 1.1547005, cave.n * 7676 ], 
+              { icon: caveIcons[cave[1]-1] }
+            )
+            .addTo(caves)
+            .bindPopup( caveSize[cave[2]] + ' ' + oreTier[cave[1]] + ' Cave ' + '(T' + cave[1] + ')');
+          });
+        })
+        .catch(error => console.error("Error loading or decoding MsgPack:", error));
+
+
 		</script>
-
-
-  <div class="mb-3">
-    <input type="search" id="filterSearch" class="form-control" placeholder="🔍 Search filters">
-  </div>
-
-  <div class="filter-container">
-    <button class="btn btn-outline-light filter-btn" onclick="toggleAll(true)">Show all</button>
-    <button class="btn btn-outline-light filter-btn" onclick="toggleAll(false)">Hide all</button>
-
-    <button class="btn btn-dark filter-btn" data-filter="Cities and Others">Cities and Others</button>
-    <button class="btn btn-dark filter-btn" data-filter="Ores">Ores</button>
-    <button class="btn btn-dark filter-btn" data-filter="Plants">Plants</button>
-    <button class="btn btn-dark filter-btn" data-filter="Woods">Woods</button>
-    <button class="btn btn-dark filter-btn" data-filter="Essences">Essences</button>
-    <button class="btn btn-dark filter-btn" data-filter="Chests">Chests</button>
-    <button class="btn btn-dark filter-btn" data-filter="Monsters">Monsters</button>
-    <button class="btn btn-dark filter-btn" data-filter="Documents">Documents</button>
-    <button class="btn btn-dark filter-btn" data-filter="Fishing">Fishing</button>
-    <button class="btn btn-dark filter-btn" data-filter="NPC">NPC</button>
-    <button class="btn btn-dark filter-btn" data-filter="Areas">Areas</button>
-    <button class="btn btn-dark filter-btn" data-filter="Points of interest">Points of interest</button>
-  </div>
-
-  <script>
-    const buttons = document.querySelectorAll('.btn-dark');
-
-    function toggleAll(show) {
-      buttons.forEach(btn => {
-        btn.classList.toggle('btn-outline-success', show);
-        btn.classList.toggle('btn-dark', !show);
-      });
-    }
-
-    document.getElementById('filterSearch').addEventListener('input', function () {
-      const query = this.value.toLowerCase();
-      buttons.forEach(btn => {
-        const match = btn.dataset.filter.toLowerCase().includes(query);
-        btn.style.display = match ? 'inline-block' : 'none';
-      });
-    });
-
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('btn-outline-success');
-        btn.classList.toggle('btn-dark');
-      });
-    });
-  </script>
 	</body>
 </html>

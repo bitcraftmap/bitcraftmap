@@ -41,3 +41,18 @@ Links and inspiration :
 https://interactive-game-maps.github.io/
 https://stackoverflow.com/questions/12262163/what-are-leaflet-and-mapbox-and-what-are-their-differences
  (ablion map) view-source:https://albiononline2d.com/public/js/map.js https://albiononline2d.com/en/map/2202
+
+
+
+
+
+
+Leaflet Layers : 
+
+Ruined Cities
+Claims
+Towers
+Caves
+Temples
+Wonders
+
