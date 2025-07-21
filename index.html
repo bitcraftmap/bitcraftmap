@@ -28,12 +28,12 @@
 			const imageHeight = 7676;
 			const imageBounds = [[0, 0], [imageHeight, imageWidth]];
 			
-			const map = L.map('map', {
-				crs: L.CRS.Simple,
-				minZoom: -10,
-				maxZoom: 10,
-				zoomSnap: 0.1,
-			});
+      const map = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: -10,
+        maxZoom: 10,
+        zoomSnap: 0.1
+      });
 			
 			map.fitBounds(imageBounds);
 			L.imageOverlay('assets/maps/map.png', imageBounds).addTo(map);
@@ -83,13 +83,47 @@
         'Large'
       ]
 
-      // const ruinedCities = L.layerGroup();
-      // const playerClaims = L.layerGroup();
-      // const empireTowers = L.layerGroup();
-      // const temples = L.layerGroup();
-      // const wonders = L.layerGroup();
+      const poiLayers = ["ruinedCities", "playerClaims","empireTowers", "temples", "wonders", "caves"];
+      const resourcesLayers = ["wildAnimals", "monsters","hieroglyphs", "fibers", "trees", "ores", "sand", "stone", "clay", "berry", "flower", "mushroom", "fishBait", "fishLake", "fishOcean"];
+      const miscLayers = ["jakylsDens", "travelersFruits","wildFoods", "sticks", "flint"];
 
-      const caves = L.canvasIconLayer({}).addTo(map);
+
+
+
+      const caves = L.canvasIconLayer({});
+
+      const overlayMaps = {
+        "Caves": caves
+      };
+
+      L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+      caves.addTo(map);
+
+      async function loadMsgpack(assetUrl) {
+        const response = await fetch(assetUrl);
+        const buffer = await response.arrayBuffer();
+        const data = msgpack.decode(new Uint8Array(buffer));
+      }
+
+      async function loadCaves() {
+        const response = await fetch('assets/markers/caves.msgpack');
+        const buffer = await response.arrayBuffer();
+        const data = msgpack.decode(new Uint8Array(buffer));
+
+        const tier = cave[1];
+        const size = cave[2];
+        const pos_n = cave.n;
+        const pos_e = cave.e;
+
+        const marker = L.marker(
+          [ cave.e * 7676 / 1.1547005, cave.n * 7676 ],
+          { icon: caveIcons[tier - 1] }
+        );
+      }
+
+
+
+
 
       fetch('assets/markers/caves.msgpack')
         .then(response => response.arrayBuffer())
@@ -102,10 +136,13 @@
               { icon: caveIcons[cave[1]-1] }
             )
             .addTo(caves)
-            .bindPopup( caveSize[cave[2]] + ' ' + oreTier[cave[1]] + ' Cave ' + '(T' + cave[1] + ')');
+            .bindPopup( caveSize[cave[2]] + ' ' + oreTier[cave[1]-1] + ' Cave ' + '(T' + cave[1] + ')');
           });
         })
-        .catch(error => console.error("Error loading or decoding MsgPack:", error));
+        .catch(error => 
+          console.error("Error loading or decoding MsgPack:", error)
+        );
+
 
 
 		</script>
