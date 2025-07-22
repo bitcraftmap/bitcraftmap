@@ -43,16 +43,3 @@ https://stackoverflow.com/questions/12262163/what-are-leaflet-and-mapbox-and-wha
  (ablion map) view-source:https://albiononline2d.com/public/js/map.js https://albiononline2d.com/en/map/2202
 
 
-
-
-
-
-Leaflet Layers : 
-
-Ruined Cities
-Claims
-Towers
-Caves
-Temples
-Wonders
-

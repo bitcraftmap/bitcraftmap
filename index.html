@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Bitcraft Game Map</title>
-    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="assets/icons/MapCompass.png">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 
@@ -39,9 +39,11 @@
         crs: L.CRS.Simple,
         minZoom: -3,
         maxZoom: 5,
-        // zoomSnap: 0.1,
-        // attributionControl: false,
-        // zoomControl: false
+        zoomSnap: 0.1,
+        attributionControl: false,
+        zoomControl: false,
+        preferCanvas: true,
+        boxZoom: true
       }).setView([0.5 * imageHeight / 1.15, 0.5 * imageWidth], 0);
 			
 			L.imageOverlay('assets/maps/map.png', imageBounds).addTo(map);
