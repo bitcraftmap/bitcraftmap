@@ -88,72 +88,71 @@
       const miscLayers = ["jakylsDens", "travelersFruits","wildFoods", "sticks", "flint"];
 
       const cavesLayer = L.canvasIconLayer();
-      const treesLayer = L.canvasIconLayer();
-      const claimsLayer = L.canvasIconLayer();
-      const ruinedLayer = L.canvasIconLayer();
-      const templesLayer = L.canvasIconLayer();
+      // const treesLayer = L.canvasIconLayer();
+      // const claimsLayer = L.canvasIconLayer();
+      // const ruinedLayer = L.canvasIconLayer();
+      // const templesLayer = L.canvasIconLayer();
 
-      const overlayMaps = {
-        "Trees": treesLayer,
-        "Caves": cavesLayer,
-        "Claims": claimsLayer,
-        "Temples": templesLayer,
-        "Ruined Cities": ruinedLayer
-      };
+      // const overlayMaps = {
+      //   "Trees": treesLayer,
+      //   "Caves": cavesLayer,
+      //   "Claims": claimsLayer,
+      //   "Temples": templesLayer,
+      //   "Ruined Cities": ruinedLayer
+      // };
+
+      //L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
       cavesLayer.addTo(map);
-      treesLayer.addTo(map);
-      templesLayer.addTo(map);
-      ruinedLayer.addTo(map);
-      claimsLayer.addTo(map);
+      // treesLayer.addTo(map);
+      // templesLayer.addTo(map);
+      // ruinedLayer.addTo(map);
+      // claimsLayer.addTo(map);
 
-      fetch('assets/markers/trees.msgpack')
-      .then(response => response.arrayBuffer())
-      .then(buffer => {
-        const data = msgpack.decode(new Uint8Array(buffer));
-        data.forEach(node => {
-          const pos_e = Math.round(node[1]);
-          const pos_n = Math.round(node[2]);
-          const text = 'Traveler\'s Tree</br>N '+ pos_n + ' E ' + pos_e;
+      // fetch('assets/markers/trees.msgpack')
+      // .then(response => response.arrayBuffer())
+      // .then(buffer => {
+      //   const data = msgpack.decode(new Uint8Array(buffer));
+      //   data.forEach(node => {
+      //     const pos_e = Math.round(node[1]);
+      //     const pos_n = Math.round(node[2]);
+      //     const text = 'Traveler\'s Tree</br>N '+ pos_n + ' E ' + pos_e;
+      //     // Magic number 1.1547005
+      //     L.marker([pos_n / 1.1547005, pos_e], {icon: treeIcon})
+      //     .bindPopup(text)
+      //     .addTo(treesLayer);
+      //   });
+      // });
 
-          // Magic number 1.1547005
-          L.marker([pos_n / 1.1547005, pos_e], {icon: treeIcon})
-          .bindPopup(text)
-          .addTo(treesLayer);
-        });
-      });
+      // fetch('assets/markers/temples.msgpack')
+      // .then(response => response.arrayBuffer())
+      // .then(buffer => {
+      //   const data = msgpack.decode(new Uint8Array(buffer));
+      //   data.forEach(node => {
+      //     const pos_e = Math.round(node[1]);
+      //     const pos_n = Math.round(node[2]);
+      //     const text = node[3] + '</br>N '+ pos_n + ' E ' + pos_e;
+      //     // Magic number 1.1547005
+      //     L.marker([pos_n / 1.1547005, pos_e], {icon: templeIcon})
+      //     .bindPopup(text)
+      //     .addTo(templesLayer);
+      //   });
+      // });
 
-      fetch('assets/markers/temples.msgpack')
-      .then(response => response.arrayBuffer())
-      .then(buffer => {
-        const data = msgpack.decode(new Uint8Array(buffer));
-        data.forEach(node => {
-          const pos_e = Math.round(node[1]);
-          const pos_n = Math.round(node[2]);
-          const text = node[3] + '</br>N '+ pos_n + ' E ' + pos_e;
-
-          // Magic number 1.1547005
-          L.marker([pos_n / 1.1547005, pos_e], {icon: templeIcon})
-          .bindPopup(text)
-          .addTo(templesLayer);
-        });
-      });
-
-      fetch('assets/markers/ruined.msgpack')
-      .then(response => response.arrayBuffer())
-      .then(buffer => {
-        const data = msgpack.decode(new Uint8Array(buffer));
-        data.forEach(node => {
-          const pos_e = Math.round(node[1]);
-          const pos_n = Math.round(node[2]);
-          const text = node[3] + '</br>N '+ pos_n + ' E ' + pos_e;
-
-          // Magic number 1.1547005
-          L.marker([pos_n / 1.1547005, pos_e], {icon: ruinedIcon})
-          .bindPopup(text)
-          .addTo(ruinedLayer);
-        });
-      });
+      // fetch('assets/markers/ruined.msgpack')
+      // .then(response => response.arrayBuffer())
+      // .then(buffer => {
+      //   const data = msgpack.decode(new Uint8Array(buffer));
+      //   data.forEach(node => {
+      //     const pos_e = Math.round(node[1]);
+      //     const pos_n = Math.round(node[2]);
+      //     const text = node[3] + '</br>N '+ pos_n + ' E ' + pos_e;
+      //     // Magic number 1.1547005
+      //     L.marker([pos_n / 1.1547005, pos_e], {icon: ruinedIcon})
+      //     .bindPopup(text)
+      //     .addTo(ruinedLayer);
+      //   });
+      // });
 
       fetch('assets/markers/caves.msgpack')
       .then(response => response.arrayBuffer())
@@ -173,27 +172,20 @@
         });
       });
 
-      fetch('assets/markers/claims.msgpack')
-      .then(response => response.arrayBuffer())
-      .then(buffer => {
-        const data = msgpack.decode(new Uint8Array(buffer));
-        data.forEach(node => {
-          const pos_e = Math.round(node[1]);
-          const pos_n = Math.round(node[2]);
-          const text = node[3] + ' (T' + node[4] + ')</br>N '+ pos_n + ' E ' + pos_e;
-
-          // Magic number 1.1547005
-          L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcon})
-          .bindPopup(text)
-          .addTo(claimsLayer);
-        });
-      });
-
-      map.on('overlayadd', function (e) {
-        if (e.layer.redraw) {
-          e.layer.redraw();
-        }
-      });
+      // fetch('assets/markers/claims.msgpack')
+      // .then(response => response.arrayBuffer())
+      // .then(buffer => {
+      //   const data = msgpack.decode(new Uint8Array(buffer));
+      //   data.forEach(node => {
+      //     const pos_e = Math.round(node[1]);
+      //     const pos_n = Math.round(node[2]);
+      //     const text = node[3] + ' (T' + node[4] + ')</br>N '+ pos_n + ' E ' + pos_e;
+      //     // Magic number 1.1547005
+      //     L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcon})
+      //     .bindPopup(text)
+      //     .addTo(claimsLayer);
+      //   });
+      // });
 
 		</script>
 	</body>
