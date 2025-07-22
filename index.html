@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Bitcraft Game Map</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 
@@ -36,12 +37,12 @@
 			
       const map = L.map('map', {
         crs: L.CRS.Simple,
-        minZoom: -10,
-        maxZoom: 10,
-        zoomSnap: 0.1,
-        attributionControl: false,
-        zoomControl: false
-      }).setView([0.5*7676/1.15, 0.5*7676], -1);;
+        minZoom: -3,
+        maxZoom: 5,
+        // zoomSnap: 0.1,
+        // attributionControl: false,
+        // zoomControl: false
+      }).setView([0.5 * imageHeight / 1.15, 0.5 * imageWidth], 0);
 			
 			L.imageOverlay('assets/maps/map.png', imageBounds).addTo(map);
 
@@ -87,72 +88,66 @@
       const resourcesLayers = ["wildAnimals", "monsters","hieroglyphs", "fibers", "trees", "ores", "sand", "stone", "clay", "berry", "flower", "mushroom", "fishBait", "fishLake", "fishOcean"];
       const miscLayers = ["jakylsDens", "travelersFruits","wildFoods", "sticks", "flint"];
 
-      const cavesLayer = L.canvasIconLayer();
-      // const treesLayer = L.canvasIconLayer();
-      // const claimsLayer = L.canvasIconLayer();
-      // const ruinedLayer = L.canvasIconLayer();
-      // const templesLayer = L.canvasIconLayer();
+      const cavesLayer = L.layerGroup();
+      const treesLayer = L.layerGroup();
+      const claimsLayer = L.layerGroup();
+      const ruinedLayer = L.layerGroup();
+      const templesLayer = L.layerGroup();
 
-      // const overlayMaps = {
-      //   "Trees": treesLayer,
-      //   "Caves": cavesLayer,
-      //   "Claims": claimsLayer,
-      //   "Temples": templesLayer,
-      //   "Ruined Cities": ruinedLayer
-      // };
+      const overlayMaps = {
+        "Trees": treesLayer,
+        "Caves": cavesLayer,
+        "Claims": claimsLayer,
+        "Temples": templesLayer,
+        "Ruined Cities": ruinedLayer
+      };
 
-      //L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+      L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
-      cavesLayer.addTo(map);
-      // treesLayer.addTo(map);
-      // templesLayer.addTo(map);
-      // ruinedLayer.addTo(map);
-      // claimsLayer.addTo(map);
+      fetch('assets/markers/trees.msgpack')
+      .then(response => response.arrayBuffer())
+      .then(buffer => {
+        const data = msgpack.decode(new Uint8Array(buffer));
+        data.forEach(node => {
+          const pos_e = Math.round(node[1]);
+          const pos_n = Math.round(node[2]);
+          const text = 'Traveler\'s Tree</br>N '+ pos_n + ' E ' + pos_e;
+          // Magic number 1.1547005
+          L.marker([pos_n / 1.1547005, pos_e], {icon: treeIcon})
+          .bindPopup(text)
+          .addTo(treesLayer);
+        });
+      });
 
-      // fetch('assets/markers/trees.msgpack')
-      // .then(response => response.arrayBuffer())
-      // .then(buffer => {
-      //   const data = msgpack.decode(new Uint8Array(buffer));
-      //   data.forEach(node => {
-      //     const pos_e = Math.round(node[1]);
-      //     const pos_n = Math.round(node[2]);
-      //     const text = 'Traveler\'s Tree</br>N '+ pos_n + ' E ' + pos_e;
-      //     // Magic number 1.1547005
-      //     L.marker([pos_n / 1.1547005, pos_e], {icon: treeIcon})
-      //     .bindPopup(text)
-      //     .addTo(treesLayer);
-      //   });
-      // });
+      fetch('assets/markers/temples.msgpack')
+      .then(response => response.arrayBuffer())
+      .then(buffer => {
+        const data = msgpack.decode(new Uint8Array(buffer));
+        data.forEach(node => {
+          const pos_e = Math.round(node[1]);
+          const pos_n = Math.round(node[2]);
+          const text = node[3] + '</br>N '+ pos_n + ' E ' + pos_e;
+          // Magic number 1.1547005
+          L.marker([pos_n / 1.1547005, pos_e], {icon: templeIcon})
+          .bindPopup(text)
+          .addTo(templesLayer);
+        });
+      });
 
-      // fetch('assets/markers/temples.msgpack')
-      // .then(response => response.arrayBuffer())
-      // .then(buffer => {
-      //   const data = msgpack.decode(new Uint8Array(buffer));
-      //   data.forEach(node => {
-      //     const pos_e = Math.round(node[1]);
-      //     const pos_n = Math.round(node[2]);
-      //     const text = node[3] + '</br>N '+ pos_n + ' E ' + pos_e;
-      //     // Magic number 1.1547005
-      //     L.marker([pos_n / 1.1547005, pos_e], {icon: templeIcon})
-      //     .bindPopup(text)
-      //     .addTo(templesLayer);
-      //   });
-      // });
-
-      // fetch('assets/markers/ruined.msgpack')
-      // .then(response => response.arrayBuffer())
-      // .then(buffer => {
-      //   const data = msgpack.decode(new Uint8Array(buffer));
-      //   data.forEach(node => {
-      //     const pos_e = Math.round(node[1]);
-      //     const pos_n = Math.round(node[2]);
-      //     const text = node[3] + '</br>N '+ pos_n + ' E ' + pos_e;
-      //     // Magic number 1.1547005
-      //     L.marker([pos_n / 1.1547005, pos_e], {icon: ruinedIcon})
-      //     .bindPopup(text)
-      //     .addTo(ruinedLayer);
-      //   });
-      // });
+      fetch('assets/markers/ruined.msgpack')
+      .then(response => response.arrayBuffer())
+      .then(buffer => {
+        const data = msgpack.decode(new Uint8Array(buffer));
+        data.forEach(node => {
+          const pos_e = Math.round(node[1]);
+          const pos_n = Math.round(node[2]);
+          const text = node[3] + '</br>N '+ pos_n + ' E ' + pos_e;
+          // Magic number 1.1547005
+          L.marker([pos_n / 1.1547005, pos_e], {icon: ruinedIcon})
+          .bindPopup(text)
+          .addTo(ruinedLayer);
+        });
+      });
 
       fetch('assets/markers/caves.msgpack')
       .then(response => response.arrayBuffer())
@@ -164,7 +159,6 @@
           const text = 
             caveSize[node[3]-1] + ' ' + oreTier[node[4]-1] + ' Cave'
             + '</br>N '+ pos_n + ' E ' + pos_e;
-
           // Magic number 1.1547005
           L.marker([pos_n / 1.1547005, pos_e], {icon: caveIcons[node[4]-1]})
           .bindPopup(text)
@@ -172,20 +166,20 @@
         });
       });
 
-      // fetch('assets/markers/claims.msgpack')
-      // .then(response => response.arrayBuffer())
-      // .then(buffer => {
-      //   const data = msgpack.decode(new Uint8Array(buffer));
-      //   data.forEach(node => {
-      //     const pos_e = Math.round(node[1]);
-      //     const pos_n = Math.round(node[2]);
-      //     const text = node[3] + ' (T' + node[4] + ')</br>N '+ pos_n + ' E ' + pos_e;
-      //     // Magic number 1.1547005
-      //     L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcon})
-      //     .bindPopup(text)
-      //     .addTo(claimsLayer);
-      //   });
-      // });
+      fetch('assets/markers/claims.msgpack')
+      .then(response => response.arrayBuffer())
+      .then(buffer => {
+        const data = msgpack.decode(new Uint8Array(buffer));
+        data.forEach(node => {
+          const pos_e = Math.round(node[1]);
+          const pos_n = Math.round(node[2]);
+          const text = node[3] + ' (T' + node[4] + ')</br>N '+ pos_n + ' E ' + pos_e;
+          // Magic number 1.1547005
+          L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcon})
+          .bindPopup(text)
+          .addTo(claimsLayer);
+        });
+      });
 
 		</script>
 	</body>
