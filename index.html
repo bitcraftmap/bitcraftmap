@@ -72,6 +72,8 @@
         createMapIcon('assets/icons/AstraliteOreChunk.webp')
       ];
 
+      const claimIcon = createMapIcon('assets/icons/claim.png');
+
       const oreTier = [
         'Ferralith',
         'Pyrelite',
@@ -98,20 +100,25 @@
 
 
       const caves = L.canvasIconLayer({});
+      const claims = L.canvasIconLayer({});
 
       const overlayMaps = {
-        "Caves": caves
+        "Caves": caves,
+        "Claims": claims
       };
 
       L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
       caves.addTo(map);
+      claims.addTo(map);
 
+      // For later
       async function loadMsgpack(assetUrl) {
         const response = await fetch(assetUrl);
         const buffer = await response.arrayBuffer();
         const data = msgpack.decode(new Uint8Array(buffer));
       }
 
+      // For later
       async function loadCaves() {
         const response = await fetch('assets/markers/caves.msgpack');
         const buffer = await response.arrayBuffer();
@@ -130,7 +137,25 @@
 
 
 
+      fetch('assets/markers/claims.msgpack')
+        .then(response => response.arrayBuffer())
+        .then(buffer => {
+          const data = msgpack.decode(new Uint8Array(buffer));
 
+          data.forEach(claim => {
+
+            console.log(claim[1]);
+            L.marker(
+              [ claim[1], claim[2] ], 
+              { icon: claimIcon }
+            )
+            .addTo(claims)
+            .bindPopup( claim[3] + ' (T' + claim[4] + ')' );
+          });
+        })
+        .catch(error => 
+          console.error("Error: ", error)
+        );
 
       fetch('assets/markers/caves.msgpack')
         .then(response => response.arrayBuffer())
@@ -147,7 +172,7 @@
           });
         })
         .catch(error => 
-          console.error("Error loading or decoding MsgPack:", error)
+          console.error("Error: ", error)
         );
 
 		</script>
