@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 300 300">
+  <defs>
+    <polygon id="logo-a" points=".092 73.5 42.528 0 127.398 147"/>
+    <radialGradient id="logo-b" cy="100%" r="53.114%" fx="50%" fy="100%">
+      <stop offset="0%" stop-color="#CECBFF"/>
+      <stop offset="100%" stop-color="#8D9CFF" stop-opacity="0"/>
+    </radialGradient>
+    <polygon id="logo-d" points="-.002 147 84.868 0 127.304 73.5"/>
+    <linearGradient id="logo-f" x1="50%" x2="50%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#3D74B1"/>
+      <stop offset="100%" stop-color="#223754"/>
+    </linearGradient>
+    <linearGradient id="logo-g" x1="50%" x2="50%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#5197E6"/>
+      <stop offset="100%" stop-color="#223754"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <polygon fill="#000" points="150 3 277.306 76.5 277.306 223.5 150 297 22.694 223.5 22.694 76.5"/>
+    <g transform="translate(21.712 3)">
+      <g transform="translate(.888 147)">
+        <mask id="logo-c" fill="#fff">
+          <use xlink:href="#logo-a"/>
+        </mask>
+        <use fill="#223754" opacity=".8" xlink:href="#logo-a"/>
+        <rect width="918.75" height="918.75" x="-332.22" y="-459.62" fill="url(#logo-b)" mask="url(#logo-c)" rx="8"/>
+      </g>
+      <g transform="translate(128.288 147)">
+        <mask id="logo-e" fill="#fff">
+          <use xlink:href="#logo-d"/>
+        </mask>
+        <use fill="#223754" opacity=".8" xlink:href="#logo-d"/>
+        <rect width="918.75" height="918.75" x="-459.62" y="-459.62" fill="url(#logo-b)" mask="url(#logo-e)" rx="8"/>
+      </g>
+      <polygon fill="url(#logo-f)" points=".98 73.5 43.416 147 128.286 0" opacity=".8"/>
+      <polygon fill="url(#logo-f)" points="128.286 73.5 170.722 147 255.591 0" opacity=".8" transform="matrix(-1 0 0 1 383.877 0)"/>
+      <polygon fill="#223754" points="213.156 147 255.591 220.5 255.591 73.5" opacity=".7"/>
+      <polygon fill="#223754" points=".98 147 43.416 220.5 43.416 73.5" opacity=".7" transform="matrix(-1 0 0 1 44.396 0)"/>
+      <polygon fill="url(#logo-g)" points="128.286 0 43.416 147 128.286 294 213.156 147"/>
+    </g>
+  </g>
+</svg>
