@@ -97,12 +97,17 @@
       const templesLayer = L.layerGroup();
 
       const overlayMaps = {
-        "Trees": treesLayer,
+        "Wonders": treesLayer,
         "Caves": cavesLayer,
         "Claims": claimsLayer,
         "Temples": templesLayer,
         "Ruined Cities": ruinedLayer
       };
+
+      treesLayer.addTo(map);
+      templesLayer.addTo(map);
+      ruinedLayer.addTo(map);
+
 
       L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
