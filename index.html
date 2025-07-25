@@ -48,12 +48,12 @@
 			
 			L.imageOverlay('assets/maps/map.png', imageBounds).addTo(map);
 
-      function createMapIcon(iconUrl) {
+      function createMapIcon(iconUrl, iconSize = [32, 32], iconAnchor = [16, 16], popupAnchor = [0, -16]) {
         return L.icon({
           iconUrl: iconUrl,
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
-          popupAnchor: [0, -16],
+          iconSize: iconSize,
+          iconAnchor: iconAnchor,
+          popupAnchor: popupAnchor,
           shadowUrl: null,
           shadowSize: null,
           shadowAnchor: null
@@ -73,8 +73,21 @@
         createMapIcon('assets/icons/AstraliteOreChunk.webp')
       ];
 
-      const claimIcon = createMapIcon('assets/icons/claim.png');
-      const ruinedIcon = createMapIcon('assets/icons/ruined.png');
+      const claimIcons = [
+        createMapIcon('assets/icons/claim_t0.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t1.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t2.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t3.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t4.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t5.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t6.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t7.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t8.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t9.png',  [44, 44], [22, 22], [0, -22]),
+        createMapIcon('assets/icons/claim_t10.png', [44, 44], [22, 22], [0, -22])
+      ];
+
+      const ruinedIcon = createMapIcon('assets/icons/ruined.png',  [44, 44], [22, 22], [0, -22]);
       const templeIcon = createMapIcon('assets/icons/temple.svg');
       const treeIcon = createMapIcon('assets/icons/tree.svg');
 
@@ -104,6 +117,7 @@
         "Ruined Cities": ruinedLayer
       };
 
+      // claimsLayer.addTo(map);
       treesLayer.addTo(map);
       templesLayer.addTo(map);
       ruinedLayer.addTo(map);
@@ -182,7 +196,7 @@
           const pos_n = Math.round(node[2]);
           const text = node[3] + ' (T' + node[4] + ')</br>N '+ pos_n + ' E ' + pos_e;
           // Magic number 1.1547005
-          L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcon})
+          L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcons[node[4]]})
           .bindPopup(text)
           .addTo(claimsLayer);
         });
