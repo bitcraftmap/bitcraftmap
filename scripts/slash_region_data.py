@@ -18,10 +18,10 @@
 
 import json
 
-chunk_data_file = 'assets/data/terrain_chunk_state/region_1/terrain_chunk_state.json'
-chunk_data_file_new = 'assets/data/terrain_chunk_state/region_1/terrain_chunk_state_new.json'
+chunk_data_file = 'assets/data/terrain_chunk_state/region_8/terrain_chunk_state.json'
+chunk_data_file_new = 'assets/data/terrain_chunk_state/region_8/terrain_chunk_state_new.json'
 
-remove_keys = ['elevations', 'water_levels', 'zoning_types', 'original_elevations', 'chunk_index']
+remove_keys = ['elevations', 'water_levels', 'zoning_types', 'original_elevations', 'chunk_index', 'dimension']
 
 def remove_keys_from_dict(d, keys_to_remove):
     if isinstance(d, dict):
