@@ -27,7 +27,7 @@
 	</head>
 
 	<body>
-    <div id="map" style="width: 800px; height: 600px;"></div>
+    <div id="map"></div>
 
     <script>
       const tileSize = 256;
@@ -70,12 +70,6 @@
 
       const layer = new ChunkLayer({ tileSize: tileSize });
       layer.addTo(map);
-
-      // Set bounds to the range you have tiles for
-      const bounds = [
-        [80, 160],
-        [160, 240]
-      ];
 
       map.setMaxBounds(bounds);
       map.fitBounds(bounds);
