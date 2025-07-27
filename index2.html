@@ -30,7 +30,7 @@
     <div id="map"></div>
 
     <script>
-      const tileSize = 256;
+      const tileSize = L.point(1860, 1812);
 
       const ChunkLayer = L.GridLayer.extend({
         createTile: function (coords) {
@@ -64,11 +64,15 @@
         maxZoom: 0,
         maxNativeZoom: 0,
         zoom: 0,
-        center: [0, 0]
+        center: [0, 0],
+        bounds: [[0, 0], [80, 80]], 
       });
       
 
-      const layer = new ChunkLayer({ tileSize: tileSize });
+      const layer = new ChunkLayer(
+        { tileSize: tileSize }
+        
+      );
       layer.addTo(map);
     </script>
 	</body>

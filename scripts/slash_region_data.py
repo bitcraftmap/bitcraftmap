@@ -18,8 +18,8 @@
 
 import json
 
-chunk_data_file = 'assets/data/terrain_chunk_state/region_8/terrain_chunk_state.json'
-chunk_data_file_new = 'assets/data/terrain_chunk_state/region_8/terrain_chunk_state_new.json'
+chunk_data_file = 'assets/data/terrain_chunk_state/region_7/terrain_chunk_state.json'
+chunk_data_file_new = 'assets/data/terrain_chunk_state/region_7/terrain_chunk_state_new.json'
 
 remove_keys = ['elevations', 'water_levels', 'zoning_types', 'original_elevations', 'chunk_index', 'dimension']
 
@@ -37,7 +37,6 @@ with open(chunk_data_file, 'r') as file:
     data = json.load(file)
 
 new_json = remove_keys_from_dict(data, remove_keys)
-
 
 with open(chunk_data_file_new, 'w') as file:
     json.dump(new_json, file)

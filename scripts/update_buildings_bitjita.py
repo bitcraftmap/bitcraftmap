@@ -3,7 +3,7 @@ import json
 import math
 import time
 
-sleep = 5
+sleep = 1
 limit = 100
 all_claims = []
 current_page = 1
@@ -24,7 +24,7 @@ print('There are ' + data['count'] + ' claims to request in a total of ' + str(t
 
 for page in range(total_pages-1) :
     current_page += 1
-    print('sleeping for 5 sec')
+    print('sleeping for ' + sleep + ' sec')
     time.sleep(sleep)
     full_url = claims_url + '?limit=' + str(limit) + '&page=' + str(current_page)
     print('Requesting page ' + full_url)
@@ -35,3 +35,13 @@ print('Total claims in array :' + str(len(all_claims)))
 
 with open("assets/data/claims.json", "w") as file:
     json.dump(all_claims, file)
+
+# Todo : 
+# Transform the data to use the entityid as json key
+# For each entityid, get building data
+
+# Get info 
+# bank ? 
+# Waystone ? 
+# Market ?
+# number of NPC ?
