@@ -32,27 +32,23 @@
     <script>
       const tileSize = 256;
 
-      // Define the starting offsets
-      const tileXOffset = 80;  // vertical coordinate in filename = Leaflet y
-      const tileYOffset = 160; // horizontal coordinate in filename = Leaflet x
-
-      // Number of tiles you have (adjust this)
-      const numXTiles = 80;  // horizontal
-      const numYTiles = 80;  // vertical
-
       const ChunkLayer = L.GridLayer.extend({
         createTile: function (coords) {
+
           const tile = document.createElement('img');
+
           tile.width = this.getTileSize().x;
           tile.height = this.getTileSize().y;
 
-          const mapHeightInTiles = 80
+          console.log('Doing : ' + coords.y + ' ' + coords.x)
 
-          // Map Leaflet's coords to your chunk image name
-          const chunkX = (mapHeightInTiles - 1 - coords.y) + tileXOffset;
-          const chunkY = coords.x + tileYOffset; // horizontal index
+          const chunkX = 239 - coords.y;
+          const chunkY = coords.x + 80;
 
-          tile.src = `assets/maps/chunks/r8/chunk_${chunkX}_${chunkY}.png`;
+          
+          console.log('Doing : ' + chunkX + ' ' + chunkY)
+
+          tile.src = `assets/maps/chunks/r8/chunk_${chunkY}_${chunkX}.png`;
 
           tile.onerror = function () {
             tile.src = 'placeholder.png';
@@ -64,17 +60,16 @@
 
       const map = L.map('map', {
         crs: L.CRS.Simple,
-        minZoom: -10,
-        maxZoom: 10,
+        minZoom: 0,
+        maxZoom: 0,
+        maxNativeZoom: 0,
         zoom: 0,
         center: [0, 0]
       });
+      
 
       const layer = new ChunkLayer({ tileSize: tileSize });
       layer.addTo(map);
-
-      map.setMaxBounds(bounds);
-      map.fitBounds(bounds);
     </script>
 	</body>
 </html>

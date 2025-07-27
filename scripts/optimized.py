@@ -43,11 +43,17 @@ def generate_one_chunk_image(json_data, color_map):
     ax.set_aspect('equal')                        # Makes the aspect ratio of height and width the same
     ax.axis('off')                                # Remove legend on the sides
 
+    ax.set_title(
+        'X: ' + str(json_data['chunk_x']) + ' Y: ' + str(json_data['chunk_z']),
+        {'fontsize': 100, 'fontweight': 100}
+    
+    )
+
     chunk_filename = 'assets/maps/chunks/r8/chunk_' + str(json_data['chunk_x']) + '_' + str(json_data['chunk_z']) + '.png'
 
     plt.savefig(
         chunk_filename,
-        dpi = 100,
+        dpi = 150,
         bbox_inches = 'tight',
         pad_inches = 0,
         transparent = True
