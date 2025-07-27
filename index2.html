@@ -46,8 +46,10 @@
           tile.width = this.getTileSize().x;
           tile.height = this.getTileSize().y;
 
+          const mapHeightInTiles = 80
+
           // Map Leaflet's coords to your chunk image name
-          const chunkX = coords.y + tileXOffset; // vertical index
+          const chunkX = (mapHeightInTiles - 1 - coords.y) + tileXOffset;
           const chunkY = coords.x + tileYOffset; // horizontal index
 
           tile.src = `assets/maps/chunks/r8/chunk_${chunkX}_${chunkY}.png`;
