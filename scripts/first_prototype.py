@@ -42,11 +42,11 @@ def generate_one_chunk_image(json_data, options, color_map):
     ax.set_aspect('equal')                                        # Makes the aspect ratio of height and width the same
     ax.axis('off')                                                # Remove legend on the sides
 
-    chunk_filename = 'assets/maps/chunks/r8/chunk_' + str(json_data['chunk_x']) + '_' + str(json_data['chunk_z']) + '.png'
+    chunk_filename = 'assets/maps/chunks/all/chunk_' + str(json_data['chunk_x']) + '_' + str(json_data['chunk_z']) + '.png'
 
     plt.savefig(
         chunk_filename,
-        dpi = 150,
+        dpi = 100,
         bbox_inches = 'tight',
         pad_inches = 0,
         transparent = True
@@ -100,7 +100,17 @@ biomes_colors = [
     '#473d4c' # Sapwoods
 ]
 
+with open('assets/data/terrain_chunk_state/region_7/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    for chunk in data:
+       generate_one_chunk_image(chunk, options, biomes_colors)
+
 with open('assets/data/terrain_chunk_state/region_8/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    for chunk in data:
+       generate_one_chunk_image(chunk, options, biomes_colors)
+
+with open('assets/data/terrain_chunk_state/region_9/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
     for chunk in data:
        generate_one_chunk_image(chunk, options, biomes_colors)

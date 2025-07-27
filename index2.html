@@ -30,7 +30,7 @@
     <div id="map"></div>
 
     <script>
-      const tileSize = L.point(1860, 1812);
+      const tileSize = 256 // L.point(1860, 1812);
 
       const ChunkLayer = L.GridLayer.extend({
         createTile: function (coords) {
@@ -43,12 +43,12 @@
           console.log('Doing : ' + coords.y + ' ' + coords.x)
 
           const chunkX = 239 - coords.y;
-          const chunkY = coords.x + 80;
+          const chunkY = coords.x;
 
           
           console.log('Doing : ' + chunkX + ' ' + chunkY)
 
-          tile.src = `assets/maps/chunks/r8/chunk_${chunkY}_${chunkX}.png`;
+          tile.src = `assets/maps/chunks/all/chunk_${chunkY}_${chunkX}.png`;
 
           tile.onerror = function () {
             tile.src = 'placeholder.png';
