@@ -99,7 +99,7 @@ biomes_colors = [
     '#495943', # Jungle
     '#473d4c' # Sapwoods
 ]
-
+'''
 with open('assets/data/terrain_chunk_state/region_7/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
     for chunk in data:
@@ -111,6 +111,37 @@ with open('assets/data/terrain_chunk_state/region_8/terrain_chunk_state_new.json
        generate_one_chunk_image(chunk, options, biomes_colors)
 
 with open('assets/data/terrain_chunk_state/region_9/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    for chunk in data:
+       generate_one_chunk_image(chunk, options, biomes_colors)
+'''
+
+with open('assets/data/terrain_chunk_state/region_4/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    for chunk in data:
+       generate_one_chunk_image(chunk, options, biomes_colors)
+
+with open('assets/data/terrain_chunk_state/region_5/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    for chunk in data:
+       generate_one_chunk_image(chunk, options, biomes_colors)
+
+with open('assets/data/terrain_chunk_state/region_6/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    for chunk in data:
+       generate_one_chunk_image(chunk, options, biomes_colors)
+
+with open('assets/data/terrain_chunk_state/region_1/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    for chunk in data:
+       generate_one_chunk_image(chunk, options, biomes_colors)
+
+with open('assets/data/terrain_chunk_state/region_2/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    for chunk in data:
+       generate_one_chunk_image(chunk, options, biomes_colors)
+
+with open('assets/data/terrain_chunk_state/region_3/terrain_chunk_state_new.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
     for chunk in data:
        generate_one_chunk_image(chunk, options, biomes_colors)
