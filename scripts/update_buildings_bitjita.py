@@ -18,8 +18,11 @@ with open('assets/data/claims.json', 'r') as file:
 claims_with_buildings = []
 print('There are ' + str(len(data)) + ' claims in the list of claims file')
 for claim in data:
-    claim['buildings'] = query_buildings_from_entityid(claim['entityid'])
+    count = len(data)
+    print(str(count) + ' left to do')
+    claim['buildings'] = query_buildings_from_entityid(claim['entityId'])
     claims_with_buildings.append(claim)
+    count -= 1
 
 print('There are ' + str(len(claims_with_buildings)) + ' claims in the json with buildings file')
 

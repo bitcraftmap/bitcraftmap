@@ -5,10 +5,11 @@
     <link rel="icon" type="image/x-icon" href="assets/icons/MapCompass.png">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
-
+		<link rel="stylesheet" href="assets/search/leaflet-search.src.css" crossorigin=""/>
 		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js" crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-canvas-marker@0.2.0/dist/leaflet.canvas-markers.min.js" crossorigin=""></script>
+		<script src="assets/search/leaflet-search.src.js" crossorigin=""></script>
 
 
 		<style>
@@ -25,12 +26,13 @@
 			}
       #coords {
         position: absolute;
-        top: 10px;
+        bottom: 10px;
         left: 10px;
         background: white;
         padding: 5px 10px;
         z-index: 1000;
         font-family: monospace;
+	      border-radius:.25em;
       }
     </style>
 	</head>
@@ -40,6 +42,7 @@
 		<div id="coords"></div>
 
 		<script>
+
 			const imageWidth = 7676;
 			const imageHeight = 7676;
 			const imageBounds = [[0, 0], [imageHeight, imageWidth]];
@@ -105,9 +108,9 @@
         'Rathium','Aurumite','Celestium','Umbracite','Astralite'
       ];
 
-      const caveSize = ['Small','Large'];
 
       // For later
+      const caveSize = ['Small','Large'];
       const poiLayers = ["ruinedCities", "playerClaims","empireTowers", "temples", "wonders", "caves"];
       const resourcesLayers = ["wildAnimals", "monsters","hieroglyphs", "fibers", "trees", "ores", "sand", "stone", "clay", "berry", "flower", "mushroom", "fishBait", "fishLake", "fishOcean"];
       const miscLayers = ["jakylsDens", "travelersFruits","wildFoods", "sticks", "flint"];
@@ -144,6 +147,33 @@
       const claimT9Layer = L.layerGroup();
       const claimT10Layer = L.layerGroup();
 
+      const allClaims = L.layerGroup([
+        claimT0Layer,
+        claimT1Layer,
+        claimT2Layer,
+        claimT3Layer,
+        claimT4Layer,
+        claimT5Layer,
+        claimT6Layer,
+        claimT7Layer,
+        claimT8Layer,
+        claimT9Layer,
+        claimT10Layer
+      ]);
+
+      const allCaves = L.layerGroup([
+        caveT1Layer,
+        caveT2Layer,
+        caveT3Layer,
+        caveT4Layer,
+        caveT5Layer,
+        caveT6Layer,
+        caveT7Layer,
+        caveT8Layer,
+        caveT9Layer,
+        caveT10Layer
+      ]);
+
       const caveLayers = [
         caveT1Layer, caveT2Layer, caveT3Layer, caveT4Layer, caveT5Layer,
         caveT6Layer, caveT7Layer, caveT8Layer, caveT9Layer, caveT10Layer
@@ -154,6 +184,23 @@
         claimT6Layer, claimT7Layer, claimT8Layer, claimT9Layer, claimT10Layer
       ];
 
+      // Todo
+      calculateExpiration = function(updatedAT, tiles, supplies) {
+        suppliesPerMin = 0;
+
+        if (tiles < 1001)  { suppliesPerMin = tiles * 0.01 * 60   } else
+        if (tiles < 2001)  { suppliesPerMin = tiles * 0.0125 * 60 } else
+        if (tiles < 3001)  { suppliesPerMin = tiles * 0.02 * 60   } else 
+        if (tiles < 4001)  { suppliesPerMin = tiles * 0.025 * 60  } else 
+        if (tiles < 6001)  { suppliesPerMin = tiles * 0.03 * 60   } else 
+        if (tiles < 8001)  { suppliesPerMin = tiles * 0.035 * 60  } else 
+        if (tiles < 10001) { suppliesPerMin = tiles * 0.04 * 60   } else 
+        if (tiles < 13001) { suppliesPerMin = tiles * 0.05 * 60   } else 
+        if (tiles < 16001) { suppliesPerMin = tiles * 0.06 * 60   }
+        else { suppliesPerMin = tiles * 0.07 * 60 }
+
+      }
+
       const overlayMaps = {
         "Wonders": treesLayer,
         "Temples": templesLayer,
@@ -162,19 +209,9 @@
         "Banks": bankLayer,
         "Markets": marketLayer,
         "Waystones": waystoneLayer,
+      };
 
-        "Claims T0": claimT0Layer,
-        "Claims T1": claimT1Layer,
-        "Claims T2": claimT2Layer,
-        "Claims T3": claimT3Layer,
-        "Claims T4": claimT4Layer,
-        "Claims T5": claimT5Layer,
-        "Claims T6": claimT6Layer,
-        "Claims T7": claimT7Layer,
-        "Claims T8": claimT8Layer,
-        "Claims T9": claimT9Layer,
-        "Claims T10": claimT10Layer,
-
+      const overlayCaves = {
         "Caves T1": caveT1Layer,
         "Caves T2": caveT2Layer,
         "Caves T3": caveT3Layer,
@@ -185,15 +222,58 @@
         "Caves T8": caveT8Layer,
         "Caves T9": caveT9Layer,
         "Caves T10": caveT10Layer
-      };
+      }
 
-      // claimsLayer.addTo(map);
+      const cavesToggle = {
+        "Caves": allCaves
+      }
+
+      const overlayClaims = {
+        
+        "Claims T0": claimT0Layer,
+        "Claims T1": claimT1Layer,
+        "Claims T2": claimT2Layer,
+        "Claims T3": claimT3Layer,
+        "Claims T4": claimT4Layer,
+        "Claims T5": claimT5Layer,
+        "Claims T6": claimT6Layer,
+        "Claims T7": claimT7Layer,
+        "Claims T8": claimT8Layer,
+        "Claims T9": claimT9Layer,
+        "Claims T10": claimT10Layer
+      }
+
+      const claimsToggle = {
+        "Claims": allClaims
+      }
+
       treesLayer.addTo(map);
       templesLayer.addTo(map);
       ruinedLayer.addTo(map);
 
-
       L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+      L.control.layers(null, cavesToggle, { collapsed: false }).addTo(map);
+      L.control.layers(null, overlayCaves, { collapsed: false }).addTo(map);
+      L.control.layers(null, claimsToggle, { collapsed: false }).addTo(map);
+      L.control.layers(null, overlayClaims, { collapsed: false }).addTo(map);
+      const controlSearch = new L.Control.Search({
+        position:'topleft',		
+        layer: allClaims,
+        initial: false,
+        marker: false,
+        firstTipSubmit: true,
+        // markerLocation: true,
+        // hideMarkerOnCollapse: true,
+        zoom: 2
+      });
+
+      map.addControl(controlSearch);
+
+      controlSearch.on('search:locationfound', function(e) {
+        if (!map.hasLayer(allClaims)) {
+          map.addLayer(allClaims);
+        }
+      });
 
       fetch('assets/markers/trees.msgpack')
       .then(response => response.arrayBuffer())
@@ -278,8 +358,9 @@
           const text = name + loc + tiles + supplies + has_bank + has_market + has_Waystone 
 
           // Magic number 1.1547005
-          const marker = L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcons[node[4]]});
+          const marker = L.marker([pos_n / 1.1547005, pos_e], {title: node[3], icon: claimIcons[node[4]]});
           marker.bindPopup(text);
+        
           marker.addTo(claimLayers[node[4]]);
 
           if (node[9]) {
@@ -301,7 +382,6 @@
         const coordE = e.latlng.lng.toFixed(0);
         coordDisplay.innerText = `N : ${coordN}, E: ${coordE}`;
       });
-
 		</script>
 	</body>
 </html>
