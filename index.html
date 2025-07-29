@@ -114,16 +114,69 @@
 
       const cavesLayer = L.layerGroup();
       const treesLayer = L.layerGroup();
-      const claimsLayer = L.layerGroup();
       const ruinedLayer = L.layerGroup();
       const templesLayer = L.layerGroup();
 
+      const caveT1Layer = L.layerGroup();
+      const caveT2Layer = L.layerGroup();
+      const caveT3Layer = L.layerGroup();
+      const caveT4Layer = L.layerGroup();
+      const caveT5Layer = L.layerGroup();
+      const caveT6Layer = L.layerGroup();
+      const caveT7Layer = L.layerGroup();
+      const caveT8Layer = L.layerGroup();
+      const caveT9Layer = L.layerGroup();
+      const caveT10Layer = L.layerGroup();
+
+      const claimT0Layer = L.layerGroup();
+      const claimT1Layer = L.layerGroup();
+      const claimT2Layer = L.layerGroup();
+      const claimT3Layer = L.layerGroup();
+      const claimT4Layer = L.layerGroup();
+      const claimT5Layer = L.layerGroup();
+      const claimT6Layer = L.layerGroup();
+      const claimT7Layer = L.layerGroup();
+      const claimT8Layer = L.layerGroup();
+      const claimT9Layer = L.layerGroup();
+      const claimT10Layer = L.layerGroup();
+
+      const caveLayers = [
+        caveT1Layer, caveT2Layer, caveT3Layer, caveT4Layer, caveT5Layer,
+        caveT6Layer, caveT7Layer, caveT8Layer, caveT9Layer, caveT10Layer
+      ];
+
+      const claimLayers = [
+        claimT0Layer, claimT1Layer, claimT2Layer, claimT3Layer, claimT4Layer, claimT5Layer,
+        claimT6Layer, claimT7Layer, claimT8Layer, claimT9Layer, claimT10Layer
+      ];
+
       const overlayMaps = {
         "Wonders": treesLayer,
-        "Caves": cavesLayer,
-        "Claims": claimsLayer,
         "Temples": templesLayer,
-        "Ruined Cities": ruinedLayer
+        "Ruined Cities": ruinedLayer,
+
+        "Claims T0": claimT1Layer,
+        "Claims T1": claimT1Layer,
+        "Claims T2": claimT2Layer,
+        "Claims T3": claimT3Layer,
+        "Claims T4": claimT4Layer,
+        "Claims T5": claimT5Layer,
+        "Claims T6": claimT6Layer,
+        "Claims T7": claimT7Layer,
+        "Claims T8": claimT8Layer,
+        "Claims T9": claimT9Layer,
+        "Claims T10": claimT10Layer,
+
+        "Caves T1": caveT1Layer,
+        "Caves T2": caveT2Layer,
+        "Caves T3": caveT3Layer,
+        "Caves T4": caveT4Layer,
+        "Caves T5": caveT5Layer,
+        "Caves T6": caveT6Layer,
+        "Caves T7": caveT7Layer,
+        "Caves T8": caveT8Layer,
+        "Caves T9": caveT9Layer,
+        "Caves T10": caveT10Layer
       };
 
       // claimsLayer.addTo(map);
@@ -186,13 +239,15 @@
         data.forEach(node => {
           const pos_e = Math.round(node[1]);
           const pos_n = Math.round(node[2]);
+          const tierIndex = node[4] - 1;
+
           const text = 
             caveSize[node[3]-1] + ' ' + oreTier[node[4]-1] + ' Cave'
             + '</br>N '+ pos_n + ' E ' + pos_e;
           // Magic number 1.1547005
           L.marker([pos_n / 1.1547005, pos_e], {icon: caveIcons[node[4]-1]})
           .bindPopup(text)
-          .addTo(cavesLayer);
+          .addTo(caveLayers[tierIndex]);
         });
       });
 
@@ -203,6 +258,7 @@
         data.forEach(node => {
           const pos_e = Math.round(node[1] / 23040 * 7676);
           const pos_n = Math.round(node[2] / 23040 * 7676);
+          const tierIndex = node[4];
 
           const name = node[3] + ' (T' + node[4] + ')' + '</br>';
           const loc = 'N '+ pos_n + ' E ' + pos_e + '</br>';
@@ -217,7 +273,7 @@
           // Magic number 1.1547005
           L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcons[node[4]]})
           .bindPopup(text)
-          .addTo(claimsLayer);
+          .addTo(claimLayers[tierIndex]);
         });
       });
 
