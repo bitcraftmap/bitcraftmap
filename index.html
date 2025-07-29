@@ -128,6 +128,10 @@
       const caveT9Layer = L.layerGroup();
       const caveT10Layer = L.layerGroup();
 
+      const bankLayer = L.layerGroup();
+      const marketLayer = L.layerGroup();
+      const waystoneLayer = L.layerGroup();
+
       const claimT0Layer = L.layerGroup();
       const claimT1Layer = L.layerGroup();
       const claimT2Layer = L.layerGroup();
@@ -155,7 +159,11 @@
         "Temples": templesLayer,
         "Ruined Cities": ruinedLayer,
 
-        "Claims T0": claimT1Layer,
+        "Banks": bankLayer,
+        "Markets": marketLayer,
+        "Waystones": waystoneLayer,
+
+        "Claims T0": claimT0Layer,
         "Claims T1": claimT1Layer,
         "Claims T2": claimT2Layer,
         "Claims T3": claimT3Layer,
@@ -258,7 +266,6 @@
         data.forEach(node => {
           const pos_e = Math.round(node[1] / 23040 * 7676);
           const pos_n = Math.round(node[2] / 23040 * 7676);
-          const tierIndex = node[4];
 
           const name = node[3] + ' (T' + node[4] + ')' + '</br>';
           const loc = 'N '+ pos_n + ' E ' + pos_e + '</br>';
@@ -271,9 +278,19 @@
           const text = name + loc + tiles + supplies + has_bank + has_market + has_Waystone 
 
           // Magic number 1.1547005
-          L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcons[node[4]]})
-          .bindPopup(text)
-          .addTo(claimLayers[tierIndex]);
+          const marker = L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcons[node[4]]});
+          marker.bindPopup(text);
+          marker.addTo(claimLayers[node[4]]);
+
+          if (node[9]) {
+            marker.addTo(bankLayer)
+          }
+          if (node[10]) {
+            marker.addTo(marketLayer)
+          }
+          if (node[11]) {
+            marker.addTo(waystoneLayer)
+          }
         });
       });
 
