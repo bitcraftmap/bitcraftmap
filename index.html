@@ -192,9 +192,19 @@
       .then(buffer => {
         const data = msgpack.decode(new Uint8Array(buffer));
         data.forEach(node => {
-          const pos_e = Math.round(node[1]);
-          const pos_n = Math.round(node[2]);
-          const text = node[3] + ' (T' + node[4] + ')</br>N '+ pos_n + ' E ' + pos_e;
+          const pos_e = Math.round(node[1] / 23040 * 7676);
+          const pos_n = Math.round(node[2] / 23040 * 7676);
+
+          const name = node[3] + ' (T' + node[4] + ')' + '</br>';
+          const loc = 'N '+ pos_n + ' E ' + pos_e + '</br>';
+          const tiles = 'Tiles : ' + node[6] + '</br>';
+          const supplies = 'Supplies : ' + node[7] + '</br>';
+          const has_bank = 'Bank : ' + (node[9] ? 'Yes' : 'No') + '</br>';
+          const has_market = 'Market : ' + (node[10] ? 'Yes' : 'No') + '</br>';
+          const has_Waystone = 'Waystone : ' + (node[11] ? 'Yes' : 'No');
+
+          const text = name + loc + tiles + supplies + has_bank + has_market + has_Waystone 
+
           // Magic number 1.1547005
           L.marker([pos_n / 1.1547005, pos_e], {icon: claimIcons[node[4]]})
           .bindPopup(text)
