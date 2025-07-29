@@ -23,12 +23,21 @@
 				width: 100%;
         background-color: #222d44;
 			}
+      #coords {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: white;
+        padding: 5px 10px;
+        z-index: 1000;
+        font-family: monospace;
+      }
     </style>
 	</head>
 
 	<body>
 		<div id="map"></div>
-		
+		<div id="coords"></div>
 
 		<script>
 			const imageWidth = 7676;
@@ -210,6 +219,14 @@
           .bindPopup(text)
           .addTo(claimsLayer);
         });
+      });
+
+      const coordDisplay = document.getElementById('coords');
+
+      map.on('mousemove', function (e) {
+        const coordN = Math.round(e.latlng.lat * 1.1547005);
+        const coordE = e.latlng.lng.toFixed(0);
+        coordDisplay.innerText = `N : ${coordN}, E: ${coordE}`;
       });
 
 		</script>
