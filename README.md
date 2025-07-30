@@ -3,6 +3,8 @@ https://bitcraftmap.com
 
 ## Things I found
 
+- https://msgpack.org/
+- https://geojson.org/
 - https://h3geo.org/
 - https://d3js.org/
     - https://d3-graph-gallery.com/graph/hexbinmap_geo_basic.html
@@ -12,3 +14,4 @@ https://bitcraftmap.com
 
 ## Check later
 - https://leafletjs.com/plugins.html#layer-switching-controls
+- https://github.com/stefanocudini/leaflet-search/tree/master / https://opengeo.tech/maps/leaflet-search/
