@@ -15,3 +15,15 @@ https://bitcraftmap.com
 ## Check later
 - https://leafletjs.com/plugins.html#layer-switching-controls
 - https://github.com/stefanocudini/leaflet-search/tree/master / https://opengeo.tech/maps/leaflet-search/
+
+## Wild ideas board
+
+- Show players on the map dynamically
+- Calculate player heat density zones
+- Get player list of waystone and show on the map the missing waystones
+- Lazy loading of data
+- Do everything for performace and ease of use
+- Show market data for each waypoints
+    - Best prices for this market [1/5/10 percentile of prices]
+    - Volume of the market calculated in number of orders, total buy order in hexcoins, other methods...
+    - Simple links to bitjita market browser
