@@ -396,14 +396,14 @@
         });
       });
       */
-     
+
       function loadGeoJsonFromURL() {
         try {
           const geoJsonEncoded = location.hash.slice(1);
           if (!geoJsonEncoded) return;
           console.log('Found location.hash: ' + geoJsonEncoded);
 
-          const geoJsonDecoded = atob(geoJsonEncoded);
+          const geoJsonDecoded = atob(geoJsonEncoded); // btoa()
           console.log('location.hash decoded to: ' + geoJsonDecoded);
 
           const geoJson = JSON.parse(geoJsonDecoded);

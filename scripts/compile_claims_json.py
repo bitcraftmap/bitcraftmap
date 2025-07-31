@@ -29,7 +29,8 @@ def generate_claims_json(json_key):
         '8': json_key['updatedAt'],
         '9': has_bank,
         '10': has_market,
-        '11': has_waystone
+        '11': has_waystone,
+        '12': json_key['entityId']
     }
 
 ### Data from claims.json
