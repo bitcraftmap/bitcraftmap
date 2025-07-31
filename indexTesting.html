@@ -383,21 +383,24 @@
         coordDisplay.innerText = `N : ${coordN}, E: ${coordE}`;
       });
 
+      /* 
       map.on('click', function(e) {
         const latlng = e.latlng;
 
         const marker = L.marker([latlng.lat, latlng.lng])
           .addTo(map)
-          .bindPopup(`Marker at ${latlng.lat.toFixed(5)}, ${latlng.lng.toFixed(5)}`);
+          .bindPopup(`Marker at ${latlng.lat.toFixed(0)}, ${latlng.lng.toFixed(0)}`);
 
         marker.on('contextmenu', function() {
           map.removeLayer(marker);
         });
       });
+      */
      
       function loadGeoJsonFromURL() {
         try {
           const geoJsonEncoded = location.hash.slice(1);
+          if (!geoJsonEncoded) return;
           console.log('Found location.hash: ' + geoJsonEncoded);
 
           const geoJsonDecoded = atob(geoJsonEncoded);
