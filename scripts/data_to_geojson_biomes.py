@@ -14,7 +14,13 @@ example_chunk = {
 
 chunk_32_32 = [example_chunk['biomes'][i*32:(i+1)*32] for i in range(32)]
 
+
+print(chunk_32_32)
+
+
 biome_data = np.array(chunk_32_32)
+
+print(biome_data)
 
 
 
@@ -40,7 +46,7 @@ for biome_type in np.unique(padded):
 
         for contour in contours:
             # Flip to (x, y) format if needed
-            coords = [(float(x)-0.5, float(y)-0.5) for y, x in contour]
+            coords = [(float(x)-0.6, float(y)-0.6) for y, x in contour]
 
             polygon = Polygon(coords)
 
