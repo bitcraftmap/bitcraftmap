@@ -7,6 +7,7 @@ https://bitcraftmap.com
 - https://geojson.org/
     - https://medium.com/@dmitry.sobolevsky/geojson-tutorial-for-beginners-ce810d3ff169
     - https://leafletjs.com/examples/geojson/
+    - https://geojsonlint.com/
 - https://h3geo.org/
 - https://d3js.org/
     - https://d3-graph-gallery.com/graph/hexbinmap_geo_basic.html

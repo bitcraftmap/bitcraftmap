@@ -397,26 +397,90 @@
       });
       */
 
-      function loadGeoJsonFromURL() {
+      function loadGeoJsonFromUrl() {
         try {
-          const geoJsonEncoded = location.hash.slice(1);
-          if (!geoJsonEncoded) return;
-          console.log('Found location.hash: ' + geoJsonEncoded);
 
-          const geoJsonDecoded = atob(geoJsonEncoded); // btoa()
-          console.log('location.hash decoded to: ' + geoJsonDecoded);
+          if (!location.hash) return;
 
-          const geoJson = JSON.parse(geoJsonDecoded);
-          console.log('geoJson correctly decoded');
-          
-          L.geoJSON(geoJson).addTo(map);
+          const hash = 
+            location.hash.slice(1)
+            .replace(/%20/g, '')
+            .replace(/%22/g, '"');
+
+          if (!hash) return;
+          console.log('Found hash: ' + hash)
+
+
+          const geoJson = JSON.parse(hash);
+          console.log('Found valid geoJson: ' + geoJson);
+
+          if (Array.isArray(geoJson)) throw new Error("geoJson must not be an array");
+
+          L.geoJSON(geoJson, {
+            pointToLayer: function(feature, latlng) {
+              const customIcon = L.icon({
+                iconUrl: "assets/icons/waypoint.png",
+                iconSize: [44, 44],
+                iconAnchor: [22, 22],
+                popupAnchor: [0, -22]
+              });
+
+              return L.marker(latlng, { icon: customIcon });
+            },
+
+            style: function(feature) {
+              return {
+                color: feature.properties?.color || "#3388ff",
+                weight: feature.properties?.weight || 3,
+                opacity: feature.properties?.opacity || 1,
+                fillColor: feature.properties?.fillColor || "#3388ff",
+                fillOpacity: feature.properties?.fillOpacity ?? 0.2
+              };
+            },
+
+            onEachFeature: function(feature, layer) {
+              if (feature.properties?.name) {
+                layer.bindPopup(feature.properties.name);
+              }
+            }
+          }).addTo(map);
+
+          if (geoJson['properties']['flyTo'] || geoJson['properties']['zoomTo']) {
+
+            // Data validation
+            if (!geoJson['properties']['flyTo']) {
+              geoJson['properties']['flyTo'] = [3838 / 1.15, 3838];
+            }
+
+            if (!geoJson['properties']['zoomTo']) {
+              geoJson['properties']['zoomTo'] = 0;
+            }
+
+            if (  geoJson['properties']['flyTo'][0] < 0 
+              ||  geoJson['properties']['flyTo'][0] > 7800
+              ||  geoJson['properties']['flyTo'][1] < 0
+              ||  geoJson['properties']['flyTo'][1] > 7800
+            ) {
+              geoJson['properties']['flyTo'] = [3838 / 1.15, 3838];
+            }
+
+            if (geoJson['properties']['zoomTo'] < -10 || geoJson['properties']['zoomTo'] > 10) {
+              geoJson['properties']['zoomTo'] = 0;
+            }
+
+            map.flyTo( 
+              [geoJson['properties']['flyTo'][1], geoJson['properties']['flyTo'][0]],
+              geoJson['properties']['zoomTo']
+            );
+          };
+
         } catch (error) {
           console.log(error);
           return;
         } 
       };
 
-      loadGeoJsonFromURL();
+      loadGeoJsonFromUrl();
 		</script>
 	</body>
 </html>
