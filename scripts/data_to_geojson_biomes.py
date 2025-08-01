@@ -31,21 +31,14 @@ geojson_features = []
 
 for biome_type in np.unique(padded):
     mask = (padded == biome_type)
-
-    # Label connected regions
     labeled, num = measure.label(mask, connectivity=1, return_num=True)
-
-    # Find contours (note: returns coords in (row, col))
     contours = measure.find_contours(mask, level=0.5)
 
     for region_label in range(1, num + 1):
         region_mask = (labeled == region_label)
-
-        # Find contours (note: returns coords in (row, col))
         contours = measure.find_contours(region_mask, level=0.5)
 
         for contour in contours:
-            # Flip to (x, y) format if needed
             coords = [(float(x)-0.6, float(y)-0.6) for y, x in contour]
 
             polygon = Polygon(coords)

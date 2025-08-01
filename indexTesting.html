@@ -419,14 +419,22 @@
 
           L.geoJSON(geoJson, {
             pointToLayer: function(feature, latlng) {
-              const customIcon = L.icon({
+
+              const waypointIcon = L.icon({
                 iconUrl: "assets/icons/waypoint.png",
                 iconSize: [44, 44],
                 iconAnchor: [22, 22],
                 popupAnchor: [0, -22]
               });
 
-              return L.marker(latlng, { icon: customIcon });
+              const bitcraftCoords = L.latLng(latlng.lat / 1.1547005, latlng.lng);
+              map.createPane("markerOnTop");
+              map.getPane("markerOnTop").style.zIndex = 999;
+
+              return L.marker(
+                bitcraftCoords,
+                { icon: waypointIcon, pane: "markerOnTop" }
+              );
             },
 
             style: function(feature) {
@@ -445,6 +453,8 @@
               }
             }
           }).addTo(map);
+
+          allClaims.addTo(map);
 
           if (geoJson['properties']['flyTo'] || geoJson['properties']['zoomTo']) {
 
@@ -470,7 +480,7 @@
             }
 
             map.flyTo( 
-              [geoJson['properties']['flyTo'][1], geoJson['properties']['flyTo'][0]],
+              [geoJson['properties']['flyTo'][1] / 1.1547005, geoJson['properties']['flyTo'][0]],
               geoJson['properties']['zoomTo']
             );
           };
